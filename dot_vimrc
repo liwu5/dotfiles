@@ -1,0 +1,99 @@
+" == General ==
+set nocompatible       "取消兼容模式，必须第一行 
+set number             "显示行号
+" set relativenumber     "相对行号
+set nowrap             "关闭自动折行
+set history=700        "历史记录条数
+set confirm            "在处理未保存或只读文件时，弹出确认提示
+set timeoutlen=250     " 设置按键序列超时时间
+set ttimeoutlen=25     " 设置键码超时时间
+filetype indent on     "开启文件类型检查，并且载入与该类型对应的缩进规则
+set autoread         "打开文件监视 如果在编辑过程中文件发生外部改变，就会发出提示。
+syntax on              "语法高亮
+set encoding=utf-8     "使用utf-8编码
+set t_Co=256           "启用256色
+set ruler            "在状态栏显示光标位置
+set mouse=i            "支持使用鼠标，开启插入模式的支持
+set lazyredraw        " do not redraw while executing macros (much faster)
+set scrolloff=10    "光标倒屏幕顶端/底端保留的行数，等于该函数则滚动
+set backspace=eol,start,indent        "使退格键正常处理eol、indent、start
+set noerrorbells    "出错时不要发出响声
+set novisualbell    "出错时关闭视觉提示，通常是屏幕闪烁
+set visualbell t_vb=  "关闭visual bell
+set t_vb=             "关闭beep
+set showmatch       "显示匹配符号，如成对的(),{}等
+set matchtime=5     "1/10 second to show the matching paren
+set hlsearch        "搜索字符串高亮显示（即敲回车以后）
+set incsearch       "搜索输入字符串过程中高亮显示（即未敲回车）
+set ignorecase      "搜索时忽略大小写
+set smartcase       "智能大小写，需开启ignorecase
+set ai              "autoindent（继承前一行的缩进方式，适用于多行注释）
+set si              "smartindent
+set expandtab       "由于tab键在不同的编辑器缩进不一致，该设置自动将tab转为空格
+set tabstop=4       "tab键宽度
+set shiftwidth=4    "统一缩进
+set softtabstop=4   "统一缩进,tab转为多少个空格
+set expandtab       "自动将tab转为空格
+set smarttab        "行首段首自动使用tab
+set nobackup     "不创建备份文件
+set nowb         
+set noswapfile   "不创建交换文件
+"命令模式下，底部操作指令按下tab键自动补全
+set wildmenu
+set wildmode=longest:list,full
+
+" Set cursor shape
+" Reference chart of values:
+"  1 -> blinking block
+"  2 -> solid block
+"  3 -> blinking underscore
+"  4 -> solid underscore
+"  5 -> blinking vertical bar
+"  6 -> solid vertical bar
+let &t_SI = "\<Esc>[5 q" "SI = INSERT mode
+let &t_EI = "\<Esc>[2 q" "EI = NORMAL mode
+let &t_SR = "\<Esc>[3 q" "SR = REPLACE mode
+
+" == Key mapping ==
+" To solve alt key mapping not working
+" Only lowercase letters in the ASCII code range (97 to 122)
+for i in range(97,122)
+  let c = nr2char(i)
+  exec "map \e".c." <A-".c.">"
+  exec "map! \e".c." <A-".c.">"
+endfor
+
+" Set leader key
+let mapleader=" "
+let g:mapleader=" "
+" 窗口分屏
+nnoremap <leader>sv <C-w>v
+nnoremap <leader>sh <C-w>s
+nnoremap <leader>sc <C-w>c
+nnoremap <leader>so <C-w>o
+" hjkl切换窗口
+nnoremap <C-h> <C-w>h
+nnoremap <C-l> <C-w>l
+nnoremap <C-j> <C-w>j
+nnoremap <C-k> <C-w>k
+" 设置窗口大小
+nnoremap <leader>h <C-w>5<
+nnoremap <leader>l <C-w>5>
+nnoremap <leader>j <C-w>5-
+nnoremap <leader>k <C-w>5+
+nnoremap <leader>= <C-w>=
+" 取消搜索高亮
+nnoremap <leader>nh :nohl<CR>
+" 上下移动选中文本
+nnoremap <A-j> :move .+1<CR>==
+nnoremap <A-k> :move .-2<CR>==
+inoremap <A-j> <Esc>:move .+1<CR>==gi
+inoremap <A-k> <Esc>:move .-2<CR>==gi
+vnoremap <A-j> :move '>+1<CR>gv=gv
+vnoremap <A-k> :move '<-2<CR>gv=gv
+
+" == Autocmd ==
+" Set curosr shape when buffer enter
+autocmd BufEnter * silent !echo -ne "\e[2 q" 
+" Reset cursor when vim exits
+autocmd VimLeave * silent !echo -ne "\e[5 q" 
